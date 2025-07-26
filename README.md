@@ -1,6 +1,6 @@
-# ProjectARK
+# ExploreCalifornia-DevOps
 
-ProjectARK is a DevOps project that aims to apply DevOps principles to a sample travel booking application for 'Explore California' website. The project leverages popular tools and methodologies to streamline the process of updating, testing, and releasing the application.
+ExploreCalifornia-DevOps is a DevOps project that aims to apply DevOps principles to a sample travel booking application for 'Explore California' website. The project leverages popular tools and methodologies to streamline the process of updating, testing, and releasing the application.
 
 ## Features
 
@@ -11,7 +11,7 @@ ProjectARK is a DevOps project that aims to apply DevOps principles to a sample 
 
 ## Getting Started
 
-To get started with ProjectARK, follow these steps:
+To get started with ExploreCalifornia-DevOps, follow these steps:
 
 1. Clone the repository.
 2. Install Docker and Docker Compose.
