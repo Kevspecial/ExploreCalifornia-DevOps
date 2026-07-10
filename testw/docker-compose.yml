@@ -1,0 +1,18 @@
+services:
+  mysite:
+    image: nginx:alpine
+    container_name: mysite
+    restart: unless-stopped
+    volumes:
+      - ./src:/usr/share/nginx/html:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mysite.rule=Host(`mysite.binary`)"
+      - "traefik.http.routers.mysite.entrypoints=web"
+      - "traefik.http.services.mysite.loadbalancer.server.port=80"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
