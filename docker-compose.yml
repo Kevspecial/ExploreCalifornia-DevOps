@@ -1,10 +1,20 @@
 version: '3.7'
 services:
   website:
-   build:
-    context: .
-   ports:
-    - 80:80
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: explorecalifornia
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.explorecalifornia-local.rule=Host(`explorecalifornia.binary`)"
+      - "traefik.http.routers.explorecalifornia-local.entrypoints=web"
+      - "traefik.http.routers.explorecalifornia-public.rule=Host(`explorecalifornia.kancodes.de`)"
+      - "traefik.http.routers.explorecalifornia-public.entrypoints=web"
+      - "traefik.http.services.explorecalifornia.loadbalancer.server.port=80"
 
   unit-test:
     volumes:
@@ -16,5 +26,7 @@ services:
     command:
       - /app/spec/unit/*_spec.rb
       - --pattern
-    
-    
+
+networks:
+  proxy:
+    external: true
