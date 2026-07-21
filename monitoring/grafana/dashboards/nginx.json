@@ -1,0 +1,55 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "graphTooltip": 0,
+  "title": "Explore California — nginx",
+  "uid": "explorecalifornia-nginx",
+  "version": 1,
+  "schemaVersion": 39,
+  "time": { "from": "now-30m", "to": "now" },
+  "refresh": "10s",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Active connections",
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 0 },
+      "targets": [
+        { "expr": "nginx_connections_active", "refId": "A" }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Requests / sec",
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 0 },
+      "targets": [
+        { "expr": "rate(nginx_http_requests_total[1m])", "refId": "A" }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "nginx up",
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 0 },
+      "targets": [
+        { "expr": "nginx_up", "refId": "A" }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Total HTTP requests",
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 6 },
+      "targets": [
+        { "expr": "rate(nginx_http_requests_total[1m])", "legendFormat": "requests/s", "refId": "A" }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Connections (reading / writing / waiting)",
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 6 },
+      "targets": [
+        { "expr": "nginx_connections_reading", "legendFormat": "reading", "refId": "A" },
+        { "expr": "nginx_connections_writing", "legendFormat": "writing", "refId": "B" },
+        { "expr": "nginx_connections_waiting", "legendFormat": "waiting", "refId": "C" }
+      ]
+    }
+  ]
+}

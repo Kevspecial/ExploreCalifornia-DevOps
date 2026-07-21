@@ -16,16 +16,19 @@ services:
       - "traefik.http.routers.explorecalifornia-public.entrypoints=web"
       - "traefik.http.services.explorecalifornia.loadbalancer.server.port=80"
 
-  unit-test:
-    volumes:
-        - $PWD:/app
-    build:
-      dockerfile: rspec.dockerfile
-      context: .
-    entrypoint: rspec
+  # Exposes nginx metrics to your existing homelab Prometheus by scraping
+  # the website's internal /stub_status endpoint. Shares the external `proxy`
+  # network so Prometheus can reach it at explorecalifornia-nginx-exporter:9113.
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:1.3.0
+    container_name: explorecalifornia-nginx-exporter
+    restart: unless-stopped
     command:
-      - /app/spec/unit/*_spec.rb
-      - --pattern
+      - "--nginx.scrape-uri=http://website:80/stub_status"
+    depends_on:
+      - website
+    networks:
+      - proxy
 
 networks:
   proxy:

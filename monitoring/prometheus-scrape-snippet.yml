@@ -1,0 +1,11 @@
+# Add this job to the `scrape_configs:` list in your homelab's
+# monitoring/prometheus/prometheus.yml, then reload/restart Prometheus.
+#
+# It scrapes the nginx-exporter that runs alongside the Explore California
+# site (see docker-compose.yml). Both the exporter and your Prometheus are
+# on the shared external `proxy` network, so Prometheus resolves the
+# exporter by its container name.
+
+- job_name: explorecalifornia-nginx
+  static_configs:
+    - targets: ["explorecalifornia-nginx-exporter:9113"]

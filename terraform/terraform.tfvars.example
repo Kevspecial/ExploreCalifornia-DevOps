@@ -1,0 +1,5 @@
+# Copy to terraform.tfvars and adjust as needed.
+# docker_host    = "unix:///var/run/docker.sock"
+# image_name     = "ghcr.io/kevspecial/explorecalifornia-devops:latest"
+# build_local    = false
+# external_port  = 8080

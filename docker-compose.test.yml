@@ -1,0 +1,46 @@
+# Self-contained stack for running the RSpec/Capybara/Selenium suite.
+# Used both in CI (GitHub Actions) and locally:
+#   docker compose -f docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from tests
+services:
+  website:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - test
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost/index.htm"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  selenium:
+    image: selenium/standalone-chrome:3.141.59
+    shm_size: "2gb"
+    networks:
+      - test
+    expose:
+      - "4444"
+
+  tests:
+    build:
+      context: .
+      dockerfile: rspec.dockerfile
+    depends_on:
+      website:
+        condition: service_healthy
+    networks:
+      - test
+    environment:
+      SELENIUM_HOST: selenium
+      SELENIUM_PORT: "4444"
+      WEBSITE_URL: "http://website/index.htm"
+    # Wait for the Selenium grid to be ready, then run every spec.
+    command: >
+      sh -c "until wget -q --spider http://selenium:4444/wd/hub/status; do echo 'waiting for selenium grid...'; sleep 2; done;
+             bundle exec rspec --pattern 'spec/**/*_spec.rb' --format documentation"
+    entrypoint: []
+
+networks:
+  test:
+    driver: bridge
