@@ -30,7 +30,7 @@ resource "docker_container" "website" {
   }
 
   healthcheck {
-    test     = ["CMD", "wget", "--spider", "-q", "http://localhost/index.htm"]
+    test     = ["CMD", "wget", "--spider", "-q", "http://127.0.0.1/index.htm"]
     interval = "30s"
     timeout  = "3s"
     retries  = 3
