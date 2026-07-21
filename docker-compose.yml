@@ -1,4 +1,3 @@
-version: '3.7'
 services:
   website:
     build:
@@ -10,10 +9,16 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      # internal .binary hostname (matches your other homelab services)
       - "traefik.http.routers.explorecalifornia-local.rule=Host(`explorecalifornia.binary`)"
       - "traefik.http.routers.explorecalifornia-local.entrypoints=web"
+      - "traefik.http.routers.explorecalifornia-local.service=explorecalifornia"
+      # public hostname
       - "traefik.http.routers.explorecalifornia-public.rule=Host(`explorecalifornia.kancodes.de`)"
       - "traefik.http.routers.explorecalifornia-public.entrypoints=web"
+      - "traefik.http.routers.explorecalifornia-public.service=explorecalifornia"
+      # the backend both routers point to
       - "traefik.http.services.explorecalifornia.loadbalancer.server.port=80"
 
   # Exposes nginx metrics to your existing homelab Prometheus by scraping
